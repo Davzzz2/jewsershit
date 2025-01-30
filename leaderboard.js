@@ -6,22 +6,23 @@ const prizes150k = { 1: 112.50, 2: 90, 3: 67.50, 4: 45.50, 5: 22.50, 6: 4.50, 7:
 const prizes225k = { 1: 118.75, 2: 95, 3: 71.25, 4: 47.50, 5: 23.75, 6: 4.75, 7: 4.75, 8: 4.75, 9: 4.75, 10: 4.75 };
 const prizes300k = { 1: 125, 2: 100, 3: 75, 4: 50, 5: 25, 6: 5, 7: 5, 8: 5, 9: 5, 10: 5 };
 
-let leaderboardStartDate = new Date('2024-02-01T00:00:00Z'); // Fixed start date (Feb 1, 2024)
+// Set leaderboard dates using UTC
+let leaderboardStartDate = new Date(Date.UTC(2024, 1, 1, 0, 0, 0)); // February 1, 2024, 00:00:00 UTC
 let leaderboardEndDate = new Date(leaderboardStartDate);
-leaderboardEndDate.setDate(leaderboardStartDate.getDate() + 28); // Set the end date to 28 days after the start date
+leaderboardEndDate.setUTCDate(leaderboardStartDate.getUTCDate() + 28); // 28 days later
 
 // 🎯 Update Countdown Timer
 function updateCountdown() {
     const countdownElement = document.getElementById('countdown');
     if (!countdownElement) return;
 
-    const now = new Date();
-    const timeUntilStart = leaderboardStartDate - now;
-    const timeLeft = leaderboardEndDate - now;
+    const now = new Date(); // Local time of the user
+    const timeUntilStart = leaderboardStartDate - now; // Difference in milliseconds
+    const timeLeft = leaderboardEndDate - now; // Difference in milliseconds
 
     console.log('Current Time:', now);
-    console.log('Leaderboard Start Date:', leaderboardStartDate);
-    console.log('Leaderboard End Date:', leaderboardEndDate);
+    console.log('Leaderboard Start Date (UTC):', leaderboardStartDate);
+    console.log('Leaderboard End Date (UTC):', leaderboardEndDate);
     console.log('Time Until Start:', timeUntilStart);
     console.log('Time Left:', timeLeft);
 
@@ -50,9 +51,9 @@ function updateCountdown() {
     } else {
         // The leaderboard has ended, prepare for the next period
         const nextStartDate = new Date(leaderboardStartDate);
-        nextStartDate.setMonth(nextStartDate.getMonth() + 1); // Move to next month
+        nextStartDate.setUTCMonth(nextStartDate.getUTCMonth() + 1); // Move to next month
         leaderboardStartDate = nextStartDate;
-        leaderboardEndDate.setMonth(leaderboardEndDate.getMonth() + 1); // Update end date accordingly
+        leaderboardEndDate.setUTCMonth(leaderboardEndDate.getUTCMonth() + 1); // Update end date accordingly
 
         updateLeaderboard(); // Refresh leaderboard for the new period
         countdownElement.innerHTML = `
